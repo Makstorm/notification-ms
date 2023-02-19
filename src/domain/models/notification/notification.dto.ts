@@ -10,6 +10,11 @@ export class NotificationDto {
   })
   public mainMessage: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({
+    type: String,
+    description:
+      'A message that contains the additional infomnation of notification content',
+    example: 'With great pleasure, microservice',
+  })
   public additionalMessage: string;
 }
