@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { randomUUID } from 'crypto';
+import { NotificationEntity } from 'src/domain/entities';
 
 export class NotificationModel {
   @ApiProperty({ type: String, example: randomUUID() })
@@ -14,7 +15,15 @@ export class NotificationModel {
   })
   public additionalMessage: string;
 
-  public static formEntity(notification: NotificationModel): NotificationModel {
+  @ApiProperty({
+    type: String,
+    example: 'Max',
+  })
+  public reciever: string;
+
+  public static formEntity(
+    notification: NotificationEntity,
+  ): NotificationModel {
     if (!notification) {
       return null;
     }
@@ -23,6 +32,7 @@ export class NotificationModel {
     model.id = notification.id;
     model.mainMessage = notification.mainMessage;
     model.additionalMessage = notification.additionalMessage;
+    model.reciever = notification.reciever;
 
     return model;
   }

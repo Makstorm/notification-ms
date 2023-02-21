@@ -10,7 +10,7 @@ import { Post } from '@nestjs/common';
 import { Controller, Inject } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
-@Controller('Notification')
+@Controller('notification')
 export class NotificationController {
   @Inject(NotificationServiceTag)
   private readonly service: INotificationService;
@@ -20,6 +20,7 @@ export class NotificationController {
   public async sendNotification(
     @Body() dto: NotificationDto,
   ): Promise<NotificationModel> {
+    console.log(dto);
     const ntfc = await this.service.sendNotification(dto);
     return NotificationModel.formEntity(ntfc);
   }

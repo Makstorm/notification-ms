@@ -17,4 +17,10 @@ export class NotificationDto {
     example: 'With great pleasure, microservice',
   })
   public additionalMessage: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'Max Reciever',
+  })
+  public reciever;
 }

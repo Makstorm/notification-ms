@@ -8,4 +8,7 @@ export class NotificationEntity extends AbstractEntity {
 
   @Column()
   public additionalMessage: string;
+
+  @Column({ nullable: true })
+  public reciever: string;
 }
