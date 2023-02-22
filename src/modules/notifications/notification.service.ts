@@ -16,12 +16,11 @@ export class NotificationService implements INotificationService {
     dto: NotificationDto,
   ): Promise<NotificationEntity> {
     const notificationEntity = new NotificationEntity();
+
     notificationEntity.mainMessage = dto.mainMessage;
     notificationEntity.additionalMessage = dto.additionalMessage;
     notificationEntity.reciever = dto.reciever;
+
     return await this.repository.save(notificationEntity);
-  }
-  public async getAllNotifications(): Promise<NotificationEntity[]> {
-    return await this.repository.find();
   }
 }
