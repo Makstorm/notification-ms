@@ -20,5 +20,6 @@
     "paths": {
       "@domain": ["./src/domain"]
     }
-  }
+  },
+  "include": ["./src/"]
 }
