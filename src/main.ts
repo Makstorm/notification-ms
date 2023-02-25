@@ -1,16 +1,30 @@
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from './app.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
 
-  const config = new DocumentBuilder()
-    .setTitle('Notification Microservice API')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-  await app.listen(3001);
+  const queueName = configService.getOrThrow('RABBITMQ_QUEUE_NAME');
+  const host = configService.getOrThrow('RABBITMQ_HOST');
+  const lochalHost = configService.getOrThrow('RABBITMQ_LOCAL_HOST');
+
+  await app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [`amqp://${host}`, `amqp://${lochalHost}`],
+      queue: queueName,
+      noAck: false,
+      prefetchCount: 1,
+      queueOptions: {
+        durable: true,
+      },
+    },
+  });
+
+  app.startAllMicroservices();
 }
 bootstrap();
